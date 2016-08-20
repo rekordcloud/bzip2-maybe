@@ -16,10 +16,12 @@
   },
   "devDependencies": {
     "concat-stream": "^1.5.1",
+    "easy-coveralls": "0.0.1",
     "standard": "^8.0.0-beta.5",
     "tape": "^4.6.0"
   },
   "scripts": {
+    "coveralls": "easy-coveralls",
     "test": "standard && tape test"
   },
   "bin": "./bin.js",
