@@ -1,29 +1,17 @@
-var zlib = require('zlib')
+var bz2 = require('unbzip2-stream')
+var isBzip2 = require('is-bzip2')
 var peek = require('peek-stream')
-var through = require('through2')
 var pumpify = require('pumpify')
-var isGzip = require('is-gzip')
-var isDeflate = require('is-deflate')
+var through = require('through2')
 
-var isCompressed = function (data) {
-  if (isGzip(data)) return 1
-  if (isDeflate(data)) return 2
-  return 0
-}
-
-var gunzip = function () {
+var bzip2 = function () {
   return peek({newline: false, maxBuffer: 10}, function (data, swap) {
-    switch (isCompressed(data)) {
-      case 1:
-        swap(null, pumpify(zlib.createGunzip(), gunzip()))
-        break
-      case 2:
-        swap(null, pumpify(zlib.createInflate(), gunzip()))
-        break
-      default:
-        swap(null, through())
+    if (isBzip2(data)) {
+      return swap(null, pumpify(bz2(), bzip2()))
     }
+
+    swap(null, through())
   })
 }
 
-module.exports = gunzip
+module.exports = bzip2
