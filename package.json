@@ -21,7 +21,8 @@
     "tape": "^4.6.0"
   },
   "scripts": {
-    "coveralls": "easy-coveralls",
+    "coveralls": "easy-coveralls tape",
+    "tape": "tape test",
     "test": "standard && tape test"
   },
   "bin": "./bin.js",
